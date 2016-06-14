@@ -1,0 +1,102 @@
+homeassistant:
+  name: Home
+  latitude: _HOME_LATITUDE_
+  longitude: _HOME_LONGITUDE_
+  temperature_unit: C
+  time_zone: Europe/Amsterdam
+  customize:
+    sensor.001living_14_0:
+      friendly_name: 'Luchtvochtigheid'
+      icon: 'mdi:water-percent'
+    sensor.001living_14_1:
+      friendly_name: 'Temperatuur'
+      icon: 'mdi:temperature-celsius'
+    sensor.001living_14_2:
+      friendly_name: 'Licht level'
+      icon: 'mdi:spotlight-beam'
+    sensor.001dinner_15_0:
+      friendly_name: 'Luchtvochtigheid'
+      icon: 'mdi:water-percent'
+    sensor.001dinner_15_1:
+      friendly_name: 'Temperatuur'
+      icon: 'mdi:temperature-celsius'
+    sensor.sun_elevacion:
+      icon: 'mdi:vector-circle-variant'
+    sensor.sun_next_rising:
+      icon: 'mdi:weather-sunset-up'
+    sensor.sun_next_setting:
+      icon: 'mdi:weather-sunset-down'
+
+zone:
+  - name: 'Home'
+    latitude: _HOME_LATITUDE_
+    longitude: _HOME_LONGITUDE_
+    radius: 50
+    icon: 'mdi:home'
+
+# Prediction of weather
+sensor:
+  - platform: yr
+  - platform: template
+    sensors:
+      sun_elevacion:
+        value_template: '{{ states.sun.sun.attributes.elevation }}'
+        friendly_name: 'Zonnestand'
+        unit_of_measurement: 'º'
+  - platform: template
+    sensors:
+      sun_next_rising:
+        value_template: '{{ states.sun.sun.attributes.next_rising }}'
+        friendly_name: 'Zonsopkomst'
+  - platform: template
+    sensors:
+      sun_next_setting:
+        value_template: '{{ states.sun.sun.attributes.next_setting }}'
+        friendly_name: 'Zonsondergang'
+
+# Enables the frontend
+frontend:
+
+# Discover some devices automatically
+discovery:
+
+# Track the sun
+sun:
+
+# Allows you to issue voice commands from the frontend
+conversation:
+
+# Enables support for tracking state changes over time.
+history:
+
+# View all events in a logbook
+logbook:
+
+# Checks for available updates
+updater:
+
+mysensors:
+  gateways:
+    - device: _MYSENSORS_GATEWAY_IP_
+      tcp_port: _MYSENSORS_GATEWAY_PORT_
+      persistence_file: '/config/mysensors.json'
+  debug: true
+  version: '1.5'
+  persistence: true
+
+group:
+  Woonkamer:
+    entities:
+      - sensor.001living_14_0
+      - sensor.001living_14_1
+      - sensor.001living_14_2
+  Eetkamer:
+    entities:
+      - sensor.001dinner_15_0
+      - sensor.001dinner_15_1
+  Buiten:
+    entities:
+      - sun.sun
+      - sensor.sun_elevacion
+      - sensor.sun_next_rising
+      - sensor.sun_next_setting
