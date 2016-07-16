@@ -1,4 +1,4 @@
-FROM homeassistant/home-assistant:0.21
+FROM homeassistant/home-assistant:0.23.1
 
 ADD configuration/configuration.yaml /config/configuration.yaml
 ADD configuration/mysensors.json /config/mysensors.json
